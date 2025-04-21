@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MoodFlix - Movie Recommendations Based on Mood</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+  <!-- Login Container (shown by default) -->
+  <div id="login-container" class="card">
+    <div class="logo">
+      <i class="fas fa-film"></i>
+      <h1>MoodFlix</h1>
+    </div>
+    <p class="subtitle">Movie recommendations based on your mood</p>
+    
+    <div class="form-group">
+      <label for="username">Email</label>
+      <input type="email" id="username" placeholder="bob@bob.com" />
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="bobpass" />
+    </div>
+    
+    <button class="primary-btn" onclick="login()">Login</button>
+    <p id="login-error" class="error"></p>
+    
+    <div class="test-credentials">
+      <p>Test credentials:</p>
+      <p>Email: bob@bob.com</p>
+      <p>Password: bobpass</p>
+    </div>
+  </div>
+
+  <!-- Main App (hidden until login) -->
+  <div id="main-app" style="display: none;">
+    <header>
+      <div class="logo">
+        <i class="fas fa-film"></i>
+        <h1>MoodFlix</h1>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+    
+    <main>
+      <section id="mood-section" class="card">
+        <h2 id="welcome-message">Welcome to MoodFlix!</h2>
+        <p>Select your mood to get personalized movie recommendations</p>
+        
+        <div id="mood-buttons">
+          <button class="mood-btn happy" onclick="selectMood('happy')">
+            <span class="emoji">😊</span> Happy
+          </button>
+          <button class="mood-btn sad" onclick="selectMood('sad')">
+            <span class="emoji">😢</span> Sad
+          </button>
+          <button class="mood-btn angry" onclick="selectMood('angry')">
+            <span class="emoji">😡</span> Angry
+          </button>
+          <button class="mood-btn bored" onclick="selectMood('bored')">
+            <span class="emoji">😐</span> Bored
+          </button>
+          <button class="mood-btn tired" onclick="selectMood('tired')">
+            <span class="emoji">😴</span> Tired
+          </button>
+          <button class="mood-btn romantic" onclick="selectMood('romantic')">
+            <span class="emoji">🔥</span> Romantic
+          </button>
+          
+        </div>
+        
+      </section>
+    
+      <div id="recommend-options" class="card" style="display: none;">
+        <h3>What kind of movies would you like?</h3>
+        <div class="option-buttons">
+          <button class="secondary-btn" onclick="fetchMovies('match')">
+            Match my mood
+          </button>
+          <button class="secondary-btn" onclick="fetchMovies('boost')">
+            Improve my mood
+          </button>
+        </div>
+      </div>
+    
+      <section id="movies-section" class="card" style="display: none;">
+        <h3>Recommended Movies</h3>
+        <div id="movies" class="movies-grid"></div>
+      </section>
+    
+      <section id="bookmarks-section" class="card">
+        <h3><i class="fas fa-bookmark"></i> Your Bookmarked Movies</h3>
+        <div id="bookmarks-container">
+          <ul id="bookmarks"></ul>
+          <p id="no-bookmarks">You haven't bookmarked any movies yet.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal to display trailer -->
+  <div id="trailer-modal" style="display: none;">
+    <div id="trailer-overlay" onclick="closeTrailer()"></div>
+    <div id="trailer-box" class="card">
+      <button class="close-btn" onclick="closeTrailer()" aria-label="Close trailer">
+        <i class="fas fa-times"></i>
+      </button>
+      <iframe id="trailer-frame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:1000;"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "moodflix-cookiemonsters",
+    "moodflix": "moodflix-cookiemonsters"
+  },
+  "targets": {},
+  "etags": {}
+}
